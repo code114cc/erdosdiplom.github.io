@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Компьютерлік желілер</title>
+<link href="luna.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body class="page-transition"> <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    <div class="clouds"></div>
+    <div class="clouds2"></div>
+  <div class="content">
+    <h2>Білімді бағалаудың автоматтандырылған жүйесіне қош келдіңіз!</h2>
+    <p>Жамбыл политехникалық жоғары колледжі</p>
+    <a href="index2.html" class="btn" id="startButton">Бастау</a>
+  </div>
+  
+  <audio id="clickSound" src="click-sound.mp3" preload="auto"></audio>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const contentElement = document.querySelector('.content');
+    const allPageButtons = document.querySelectorAll('.btn'); // Находим все кнопки с классом 'btn'
+    const clickSound = document.getElementById('clickSound');
+
+    // 1. Анимация появления страницы (zoom-in) при загрузке
+    // Удаляем класс, который делает контент изначально уменьшенным и невидимым
+    // Это запускает плавное увеличение и появление
+    if (contentElement.classList.contains('content-initial-hidden')) {
+        contentElement.classList.remove('content-initial-hidden');
+        // Добавляем класс, который явно устанавливает конечное состояние для перехода
+        // (трансформация в scale(1) и opacity: 1), если это необходимо
+        // В нашем случае transition на .content сделает это автоматически при удалении .content-initial-hidden
+    }
+
+
+    // 2. Анимация исчезновения страницы (zoom-out) при клике на кнопку
+    allPageButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Отменяем стандартный переход
+
+            const destination = this.href; // Получаем URL, куда ведет ссылка
+
+            // Воспроизводим звук, если он есть
+            if (clickSound) {
+                clickSound.currentTime = 0;
+                clickSound.play();
+            }
+
+            // Добавляем класс для запуска анимации уменьшения и исчезновения
+            contentElement.classList.add('zoom-out');
+
+            // Время для анимации (0.5 секунды из CSS) + небольшая задержка для звука
+            // Мы берем максимальное из duration CSS и продолжительности звука
+            const animationDuration = 1000; // 0.5s из CSS
+            const soundDuration = clickSound ? 2000 : 0; // 300ms для твоего звука
+
+            setTimeout(() => {
+                window.location.href = destination; // Переходим на новую страницу
+            }, Math.max(animationDuration, soundDuration)); // Ждем дольше: анимация или звук
+        });
+    });
+});
+
+  </script>
+
+</body>
+</html>
