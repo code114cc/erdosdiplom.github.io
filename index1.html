@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML практикалық бақылау</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- ОБЩИЕ СТИЛИ СТРАНИЦЫ И ФОНА --- */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); /* Анимированный градиентный фон */
+      background-size: 400% 400%; /* Увеличиваем размер фона для анимации */
+      animation: gradientAnimation 15s ease infinite; /* Применяем анимацию */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+      color: #333;
+    }
+
+    /* Анимация градиентного фона */
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* --- КНОПКА "НАЗАД" --- */
+    .back-button {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      width: 50px;
+      height: 50px;
+      background-color: white;
+      color: #3498db;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      z-index: 10; /* Убедимся, что кнопка поверх других элементов */
+    }
+
+    .back-button:hover {
+      transform: scale(1.1);
+      background-color: #f0f0f0;
+    }
+
+    /* --- ОСНОВНОЙ КОНТЕЙНЕР-КАРТОЧКА --- */
+    .container {
+      background: rgba(255, 255, 255, 0.95); /* Чуть более плотный белый фон */
+      backdrop-filter: blur(10px); /* Эффект размытия под контейнером */
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); /* Увеличиваем тень */
+      text-align: center;
+      max-width: 600px; /* Увеличиваем максимальную ширину */
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.3); /* Легкая граница */
+      transform-style: preserve-3d; /* Включаем 3D-перспективу для детей */
+    }
+    
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      margin-top: 0;
+      font-weight: 700;
+      font-size: 2.5em; /* Увеличиваем размер заголовка */
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 25px;
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    /* --- Стили для списков --- */
+    ol, ul {
+      list-style: none; /* Убираем стандартные маркеры/нумерацию */
+      padding: 0;
+      margin: 0 auto 30px auto; /* Центрируем и добавляем отступ снизу */
+      text-align: left; /* Выравнивание текста по левому краю */
+      max-width: 450px; /* Ограничиваем ширину списка */
+    }
+
+    li {
+      background: #f8f8f8;
+      border: 1px solid #eee;
+      margin-bottom: 10px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1.05em;
+      color: #444;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    li:hover {
+      transform: translateX(5px); /* Небольшой сдвиг при наведении */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Добавляем кастомные иконки или нумерацию для списка заданий */
+    ol li:before {
+      content: counter(item) ". ";
+      counter-increment: item;
+      color: #3498db;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    ol {
+      counter-reset: item; /* Сброс счетчика для нумерованного списка */
+    }
+    
+    /* Стили для списка фильмов */
+    ul li:before {
+      content: "\f008"; /* Иконка Font Awesome для фильма */
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      color: #e74c3c;
+      margin-right: 10px;
+    }
+
+    /* --- Стили для изображений --- */
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      margin-top: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    img:hover {
+      transform: scale(1.02); /* Легкое увеличение при наведении */
+    }
+
+    /* --- СТИЛИ ДЛЯ КНОПОК-ССЫЛОК (В данном случае для ссылки на сайт) --- */
+    .styled-link {
+      display: inline-flex; /* Используем inline-flex для центрирования содержимого */
+      align-items: center;
+      justify-content: center; /* Центрируем иконку и текст */
+      margin: 25px auto 0 auto; /* Центрируем и даем отступы */
+      padding: 15px 30px;
+      background: linear-gradient(45deg, #2ecc71, #27ae60); /* Зеленый градиент */
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 1.1em;
+      font-weight: 600;
+      box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform: translateZ(0); /* Включаем аппаратное ускорение для 3D */
+    }
+
+    .styled-link i {
+      margin-right: 10px;
+      font-size: 1.2em;
+      transition: transform 0.4s ease;
+    }
+
+    /* 3D-эффект и анимация при наведении */
+    .styled-link:hover {
+      transform: translateY(-5px) scale(1.02) rotateX(5deg); /* Эффект "поднятия" и легкий наклон */
+      box-shadow: 0 15px 35px rgba(39, 174, 96, 0.6);
+      background: linear-gradient(45deg, #27ae60, #2ecc71); /* Меняем градиент */
+    }
+
+    .styled-link:hover i {
+      transform: translateX(5px) rotate(5deg); /* Иконка немного сдвигается */
+    }
+
+    /* Эффект свечения для иконки (можно настроить цвета) */
+    .styled-link i.fa-globe:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+        transform: scale(0);
+        opacity: 0;
+        border-radius: 50%;
+        transition: transform 0.4s ease, opacity 0.4s ease;
+        pointer-events: none; /* Чтобы не мешало клику */
+        z-index: -1;
+    }
+
+    .styled-link:hover i.fa-globe:after {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    /* Стили для кода */
+    code {
+      background-color: #f0f0f0;
+      padding: 3px 6px;
+      border-radius: 5px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.95em;
+      color: #c0392b;
+    }
+
+    strong {
+        color: #e74c3c;
+    }
+
+  </style>
+</head>
+<body>
+
+  <a href="index2.html" class="back-button sound-link" aria-label="Назад">
+    <i class="fas fa-arrow-left"></i>
+  </a>
+
+  <div class="container">
+    <h1>HTML практикалық бақылау жұмысы</h1>
+    <p>Төмендегі тапсырмаларды орындаңыз:</p>
+
+    <ol class="sound-link-group">
+      <li>Бетке өз есіміңізді тақырып ретінде (h1) жазыңыз.</li>
+      <li>Өзіңіз туралы қысқаша мәтін (параграф) жазыңыз.</li>
+      <li>Ұнататын 3 фильміңіздің тізімін <code>&lt;ul&gt;</code> және <code>&lt;li&gt;</code> тэгтерімен жазыңыз.</li>
+      <li>Бір суретті <code>&lt;img&gt;</code> арқылы қойыңыз (мысалы, табиғат суреті).</li>
+      <li>Сүйікті веб-сайтыңызға <code>&lt;a&gt;</code> тэгі арқылы сілтеме жасаңыз.</li>
+    </ol>
+
+    <p><strong>Ескерту:</strong> Барлық HTML элементтер дұрыс жазылуы керек. Тегтерді жабуды ұмытпаңыз.</p>
+
+    <hr style="width: 80%; border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 30px auto;">
+
+    <h1>Амина Елжанқызы</h1>
+
+    <p>Мен Амина Елжанқызы. Бағдарламалауды үйреніп жатырмын. Веб-әзірлеу саласында өз білімімді жетілдіріп, жаңа жобалар жасауға ынталымын. Бос уақытымда фильмдер көріп, кітап оқығанды ұнатамын.</p>
+
+    <p>Менің сүйікті фильмдерім:</p>
+    <ul>
+      <li>Интерстеллар</li>
+      <li>Начало</li>
+      <li>Матрица</li>
+    </ul>
+
+    <p>Мысалы, табиғат суреті:</p>
+    <img src="https://picsum.photos/400/250?random=1" alt="Табиғат суреті">
+
+    <p>Менің сүйікті веб-сайтым:</p>
+    <a href="https://www.google.com" target="_blank" class="styled-link sound-link">
+        <i class="fas fa-globe"></i> Google-ге кіру
+    </a>
+  </div>
+
+  <audio id="click-sound" src="click-sound.mp3" preload="auto"></audio>
+  
+  <script>
+    // --- JAVASCRIPT ДЛЯ ВОСПРОИЗВЕДЕНИЯ ЗВУКА ПРИ КЛИКЕ ---
+    document.addEventListener('DOMContentLoaded', function() {
+      const clickSound = document.getElementById('click-sound');
+      
+      // Выбираем все интерактивные элементы, для которых нужен звук
+      const soundElements = document.querySelectorAll('.sound-link, .sound-link-group li');
+
+      soundElements.forEach(element => {
+        element.addEventListener('click', function(event) {
+          // Воспроизводим звук
+          clickSound.currentTime = 0; // Сбрасываем время, чтобы звук мог проигрываться при быстрых кликах
+          clickSound.play();
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

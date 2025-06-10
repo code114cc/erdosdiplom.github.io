@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML Практикалық Бақылау</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+        --primary-glow: #00aaff;
+        --card-background: rgba(10, 35, 60, 0.75);
+        --text-color: #f0f8ff;
+        --header-color: #ffffff;
+        --border-color: rgba(0, 170, 255, 0.3);
+        --success-color: #28a745;
+        --error-color: #dc3545;
+    }
+
+    body {
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        background-color: #000c18;
+        color: var(--text-color);
+        line-height: 1.6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 40px;
+        perspective: 2000px;
+        overflow: hidden;
+    }
+
+    /* Анимированный фон */
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(circle at center, #0a2444 0, #000c18 80%);
+        z-index: -1;
+    }
+    .particle {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: float 25s infinite ease-in-out;
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0) translateX(0); opacity: 1; }
+        50% { opacity: 0.8; }
+        100% { transform: translateY(-120vh) translateX(10vw); opacity: 0; }
+    }
+
+    .main-container {
+        width: 90%;
+        max-width: 800px;
+        padding: 50px;
+        background: var(--card-background);
+        box-shadow: 0 0 30px rgba(0, 170, 255, 0.3), inset 0 0 15px var(--border-color);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        transition: transform 0.6s ease;
+        animation: fadeInSlide 1.2s ease-out;
+        position: relative;
+    }
+    
+    .main-container:hover {
+        transform: translateY(-10px) rotateX(2deg) rotateY(-1deg);
+    }
+
+    @keyframes fadeInSlide {
+        from { opacity: 0; transform: translateY(50px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+        color: var(--header-color);
+        text-shadow: 0 0 10px var(--primary-glow);
+        text-align: center;
+        margin-top: 0;
+    }
+
+    p {
+        text-align: center;
+    }
+    
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    ul li {
+        background: rgba(0, 123, 255, 0.1);
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid var(--primary-glow);
+    }
+
+    textarea {
+        width: 100%;
+        height: 200px;
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background-color: rgba(0, 0, 0, 0.3);
+        color: var(--text-color);
+        font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    textarea:focus {
+        outline: none;
+        border-color: var(--primary-glow);
+        box-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+    }
+
+    .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    button {
+        flex-grow: 1;
+        padding: 15px 20px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        background-size: 250% 100%;
+        transition: background-position 0.6s, transform 0.2s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    button:hover {
+        background-position: 100% 0;
+        transform: translateY(-3px);
+    }
+    
+    #check-btn {
+        background-image: linear-gradient(45deg, #28a745, #21e8b4, #28a745);
+    }
+
+    #answer-btn {
+        background-image: linear-gradient(45deg, #007bff, #00c6ff, #007bff);
+    }
+
+    #back-btn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        flex-grow: 0;
+        width: auto;
+        padding: 10px 15px;
+        background-image: linear-gradient(45deg, #6c757d, #adb5bd, #6c757d);
+    }
+    
+    .result {
+      margin-top: 25px;
+      font-weight: bold;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      animation: resultFadeIn 0.5s forwards;
+    }
+
+    @keyframes resultFadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .error { color: #fff; background-color: var(--error-color); }
+    .success { color: #fff; background-color: var(--success-color); }
+
+    pre#answer {
+      background-color: #2d2d2d;
+      color: #f8f8f2;
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 8px;
+      display: none;
+      white-space: pre-wrap;
+      font-family: 'Consolas', 'Courier New', monospace;
+      animation: fadeInSlide 0.5s;
+    }
+    
+    .icon {
+        width: 20px;
+        height: 20px;
+        stroke: white;
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="particles-container"></div>
+
+  <div class="main-container">
+    <a href="index2.html"><button id="back-btn" class= "back-button sound-link" onclick="goBack()">
+        <svg class="icon" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        Артқа
+    </button></a> 
+    <h1>HTML Практикалық бақылау</h1>
+    <p>Төмендегі тапсырма бойынша HTML код жазыңыз:</p>
+
+    <ul>
+      <li><code>&lt;h1&gt;</code> тегімен өз атыңызды жазыңыз</li>
+      <li><code>&lt;p&gt;</code> тегімен өзіңіз туралы 1 сөйлем</li>
+      <li><code>&lt;ul&gt;</code> және <code>&lt;li&gt;</code> арқылы 3 сүйікті фильміңізді жазыңыз</li>
+    </ul>
+
+    <textarea id="userCode" placeholder="HTML кодыңызды осында жазыңыз..."></textarea>
+    
+    <div class="button-group">
+      <button id="check-btn" onclick="checkCode()">
+        <svg class="icon" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        Тексеру
+      </button>
+      <button id="answer-btn" onclick="toggleAnswer()">
+        <svg class="icon" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+        Жауапты көру
+      </button>
+    </div>
+
+    <div id="result-container"></div>
+
+    <pre id="answer">&lt;h1&gt;Айдос&lt;/h1&gt;
+&lt;p&gt;Мен веб-программалауға қызығамын және жаңа технологияларды үйренгенді ұнатамын.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Interstellar&lt;/li&gt;
+  &lt;li&gt;Inception&lt;/li&gt;
+  &lt;li&gt;The Matrix&lt;/li&gt;
+&lt;/ul&gt;</pre>
+  </div>
+  
+  <audio id="success-sound" src="https://www.soundjay.com/buttons/sounds/button-1.mp3" preload="auto"></audio>
+  <audio id="error-sound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3" preload="auto"></audio>
+
+  <script>
+    const resultContainer = document.getElementById('result-container');
+    const successSound = document.getElementById('success-sound');
+    const errorSound = document.getElementById('error-sound');
+
+    function checkCode() {
+      const code = document.getElementById('userCode').value;
+      let errors = [];
+
+      if (!code.includes('<h1>') || !code.includes('</h1>')) {
+        errors.push('Қате: &lt;h1&gt; тегі жоқ немесе дұрыс емес.');
+      }
+      if (!code.includes('<p>') || !code.includes('</p>')) {
+        errors.push('Қате: &lt;p&gt; тегі жоқ немесе дұрыс емес.');
+      }
+      if (!code.includes('<ul>') || !code.includes('</ul>')) {
+        errors.push('Қате: &lt;ul&gt; тегі жоқ немесе дұрыс емес.');
+      }
+
+      const liCount = (code.match(/<li>/g) || []).length;
+      if (liCount < 3) {
+        errors.push('Қате: Кемінде 3 &lt;li&gt; элементі болу керек.');
+      }
+      
+      resultContainer.innerHTML = '';
+
+      if (errors.length === 0) {
+        resultContainer.innerHTML = '<div class="result success">Жарайсың! Барлық тегтер дұрыс қолданылған ✅</div>';
+        successSound.currentTime = 0;
+        successSound.play();
+      } else {
+        let errorHtml = errors.map(e => `<p>${e}</p>`).join('');
+        resultContainer.innerHTML = `<div class="result error">${errorHtml}</div>`;
+        errorSound.currentTime = 0;
+        errorSound.play();
+      }
+    }
+
+    function toggleAnswer() {
+      const answer = document.getElementById('answer');
+      if (answer.style.display === 'none' || answer.style.display === '') {
+          answer.style.display = 'block';
+      } else {
+          answer.style.display = 'none';
+      }
+    }
+
+    function goBack() {
+        alert("Артқа қайту функциясы. Нақты сайтта бұл бет сізді алдыңғы бетке апарады.");
+    }
+    
+     // Анимация фона
+    const particlesContainer = document.getElementById('particles-container');
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        const size = Math.random() * 3 + 1;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * -25}s`;
+        particle.style.animationDuration = `${20 + Math.random() * 10}s`;
+        particlesContainer.appendChild(particle);
+    }
+  </script>
+</body>
+</html>

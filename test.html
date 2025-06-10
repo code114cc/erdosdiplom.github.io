@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Студенттердің Білімін Тексеру Тесті</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --background-grad-start: #a1c4fd; /* Более мягкий начальный цвет */
+            --background-grad-end: #c2e9fb;   /* Более мягкий конечный цвет */
+            --card-background: rgba(255, 255, 255, 0.95);
+            --text-color: #333;
+            --shadow-color: rgba(0, 0, 0, 0.15);
+            --accent-color: #007bff; /* Новый акцентный цвет */
+            --danger-color: #dc3545; /* Цвет для ошибок/подтверждений */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            perspective: 1000px;
+            overflow: hidden; /* Скрываем прокрутку для фона */
+            position: relative; /* Для позиционирования анимированных частиц */
+        }
+
+        /* --- Анимированный фон (более сложный градиент) --- */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #FF6B6B, #FFD166, #06D6A0, #118AB2, #073B4C);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite; /* Медленная анимация градиента */
+            z-index: -2; /* Ниже частиц и контента */
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* --- Плавающие частицы на фоне --- */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatAndFade 15s infinite ease-in-out;
+            z-index: -1; /* Выше основного фона, но ниже контента */
+        }
+
+        .particle:nth-child(1) { width: 40px; height: 40px; left: 10%; top: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 60px; height: 60px; left: 30%; top: 70%; animation-delay: 3s; background: rgba(255, 255, 255, 0.15); }
+        .particle:nth-child(3) { width: 30px; height: 30px; left: 60%; top: 10%; animation-delay: 6s; }
+        .particle:nth-child(4) { width: 70px; height: 70px; left: 80%; top: 40%; animation-delay: 9s; background: rgba(255, 255, 255, 0.25); }
+        .particle:nth-child(5) { width: 50px; height: 50px; left: 20%; top: 50%; animation-delay: 12s; }
+        .particle:nth-child(6) { width: 45px; height: 45px; left: 70%; top: 80%; animation-delay: 15s; background: rgba(255, 255, 255, 0.1); }
+
+        @keyframes floatAndFade {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            25% { opacity: 0.8; }
+            50% { transform: translateY(-50px) rotate(180deg); opacity: 0.5; }
+            75% { opacity: 0.8; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР-КАРТОЧКА --- */
+        .container {
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            background: var(--card-background);
+            box-shadow: 0 10px 30px var(--shadow-color);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            animation: fadeIn 0.8s ease-out;
+            position: relative; /* Для z-index */
+            z-index: 1; /* Выше частиц */
+        }
+        
+        .container:hover {
+            transform: translateY(-5px) rotateY(2deg);
+            box-shadow: 0 15px 40px var(--shadow-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            color: var(--text-color);
+            font-weight: 700;
+        }
+
+        h3 {
+            font-weight: 400;
+            color: #777;
+            margin: 20px 0;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--text-color);
+        }
+        
+        input[type="text"] {
+            width: calc(100% - 24px); /* Учитываем padding */
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-size: 16px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+        }
+
+        .options label {
+            display: flex; /* Используем flexbox для выравнивания */
+            align-items: center; /* Центрируем по вертикали */
+            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+            font-weight: 400;
+            font-size: 1.05em;
+        }
+
+        .options label:hover {
+            background-color: #e9f5e9;
+            border-color: var(--primary-color);
+            transform: translateX(5px); /* Небольшой сдвиг */
+        }
+
+        .options input[type="radio"] {
+            margin-right: 15px; /* Увеличиваем отступ */
+            transform: scale(1.2); /* Увеличиваем размер радиокнопок */
+            accent-color: var(--primary-color); /* Изменяем цвет радиокнопки */
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 15px 20px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-hover)); /* Использование переменных */
+            background-size: 200% 100%;
+            transition: background-position 0.5s, transform 0.2s, box-shadow 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Тень для кнопки */
+        }
+
+        button:hover {
+            background-position: 100% 0;
+            transform: translateY(-3px); /* Увеличиваем эффект подъема */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Стиль для кнопки "Артқа" внутри теста */
+        #back-test-button { /* Изменил ID, чтобы не конфликтовал с .back-button */
+            position: relative; /* Относительное позиционирование для кнопки внутри контейнера */
+            top: auto;
+            left: auto;
+            width: auto;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--text-color);
+            font-weight: 600;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px; /* Отступ снизу */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s, transform 0.2s;
+        }
+        
+        #back-test-button:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        /* Общая кнопка "Назад" в верхнем левом углу */
+        .back-main-button { /* Изменил класс, чтобы не конфликтовал с button */
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            color: #2193b0; /* Цвет иконки под градиент фона */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-main-button:hover {
+            transform: scale(1.1);
+            background-color: #f0f0f0;
+        }
+
+        /* Анимации появления/исчезновения контейнеров */
+        #question-container.flipping {
+            animation: flipOut 0.3s ease-in forwards;
+        }
+        
+        @keyframes flipOut {
+            from { transform: rotateY(0deg); opacity: 1; }
+            to { transform: rotateY(90deg); opacity: 0; }
+        }
+
+        @keyframes flipIn {
+            from { transform: rotateY(-90deg); opacity: 0; }
+            to { transform: rotateY(0deg); opacity: 1; }
+        }
+
+        /* Иконки в кнопках (общие стили для SVG) */
+        .button-icon {
+            width: 20px;
+            height: 20px;
+            stroke: white;
+            stroke-width: 2;
+            transition: transform 0.2s;
+        }
+        button:hover .button-icon {
+            transform: translateX(3px); /* Сдвиг иконки при наведении */
+        }
+        #back-test-button .button-icon {
+            stroke: #333; /* Цвет иконки для кнопки "Артқа" */
+        }
+        #back-test-button:hover .button-icon {
+            transform: translateX(-3px);
+        }
+
+        /* Стиль для кнопки "Қайталау" */
+        #result-container button {
+            background: linear-gradient(45deg, #28a745, #218838); /* Зеленый цвет для перезапуска */
+        }
+        #result-container button:hover {
+            background-position: 100% 0;
+            transform: translateY(-3px);
+        }
+
+        /* Стили для сообщений об ошибке/успехе */
+        .alert-message {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: none; /* Изначально скрыто */
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+        }
+
+        .alert-message.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <a href="index2.html" class="back-main-button sound-link" aria-label="Назад">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    
+    <div id="login-container" class="container">
+        <h2><i class="fas fa-user-plus"></i> Тіркелу</h2>
+        <div id="register-alert" class="alert-message"></div>
+        <label for="username">Аты-жөніңіз:</label>
+        <input type="text" id="username" placeholder="Аты-жөніңізді енгізіңіз"><br>
+        <button onclick="register()" class="sound-link">
+            <i class="fas fa-sign-in-alt"></i> Тіркелу
+        </button>
+        <h3>Немесе</h3>
+        <button onclick="showLogin()" class="sound-link secondary-button">
+            <i class="fas fa-user-check"></i> Кіру
+        </button>
+    </div>
+
+    <div id="login-form" class="container" style="display:none;">
+        <h2><i class="fas fa-sign-in-alt"></i> Кіру</h2>
+        <div id="login-alert" class="alert-message"></div>
+        <label for="login-username">Аты-жөніңіз:</label>
+        <input type="text" id="login-username" placeholder="Кіру үшін аты-жөніңізді енгізіңіз"><br>
+        <button onclick="login()" class="sound-link">
+            <i class="fas fa-sign-in-alt"></i> Кіру
+        </button>
+        <h3>Немесе</h3>
+        <button onclick="showRegister()" class="sound-link secondary-button">
+            <i class="fas fa-user-plus"></i> Тіркелу
+        </button>
+    </div>
+
+    <div id="test-container" class="container" style="display:none;">
+        <button id="back-test-button" onclick="goBack()" class="sound-link">
+            <svg class="button-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            Артқа
+        </button>
+        <h1><i class="fas fa-clipboard-question"></i> Тестке Қош Келдіңіз, <span id="user-name"></span></h1>
+        
+        <div id="question-wrapper">
+            <div id="question-container">
+                <p id="question-text">Сұрақты күтіңіз...</p>
+                <div class="options">
+                    <label class="sound-link"><input type="radio" name="answer" value="1"> <span id="option1"></span></label>
+                    <label class="sound-link"><input type="radio" name="answer" value="2"> <span id="option2"></span></label>
+                    <label class="sound-link"><input type="radio" name="answer" value="3"> <span id="option3"></span></label>
+                    <label class="sound-link"><input type="radio" name="answer" value="4"> <span id="option4"></span></label>
+                </div>
+                <button id="next-button" onclick="nextQuestion()" class="sound-link">
+                    Келесі сұрақ
+                    <svg class="button-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="result-container" style="display:none;">
+            <h2><i class="fas fa-trophy"></i> Нәтиже</h2>
+            <p id="score"></p>
+            <button onclick="restartTest()" class="sound-link">
+                <i class="fas fa-sync-alt"></i> Қайталау
+            </button>
+        </div>
+    </div>
+    
+    <audio id="click-sound" src="click-sound.mp3" preload="auto"></audio>
+    <audio id="correct-sound" src="yes.mp3" preload="auto"></audio>
+    <audio id="incorrect-sound" src="no.mp3" preload="auto"></audio>
+
+    <script>
+        const questions = [
+            { question: "HTML дегеніміз не?", options: ["Бағдарламалау тілі", "Гипермәтіндік белгілеу тілі", "Мәтіндік редактор", "Дерекқор тілі"], correctAnswer: 2 },
+            { question: "Веб-беттің құрылымын белгілейтін негізгі HTML тегі:", options: ["<body>", "<html>", "<head>", "<title>"], correctAnswer: 2 },
+            { question: "Веб-беттегі көрінетін мазмұн қандай тег ішінде орналасады?", options: ["<meta>", "<script>", "<body>", "<link>"], correctAnswer: 3 },
+            { question: "Веб-бетке сурет енгізу үшін қай тег қолданылады?", options: ["<picture>", "<img>", "<src>", "<image>"], correctAnswer: 2 },
+            { question: "CSS-те 'color' қасиеті не үшін қолданылады?", options: ["Фон түсін өзгерту үшін", "Мәтін түсін өзгерту үшін", "Шекара түсін өзгерту үшін", "Элемент өлшемін өзгерту үшін"], correctAnswer: 2 },
+            { question: "JavaScript-те айнымалыны жариялау үшін қай кілт сөз қолданылады?", options: ["var", "let", "const", "Барлық жауап дұрыс"], correctAnswer: 4 },
+            { question: "Тізімдерді белгілеу үшін қандай HTML тегі қолданылады?", options: ["<list>", "<li>", "<ul> немесе <ol>", "<dd>"], correctAnswer: 3 }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        const loginContainer = document.getElementById('login-container');
+        const loginForm = document.getElementById('login-form');
+        const testContainer = document.getElementById('test-container');
+        const questionContainer = document.getElementById('question-container');
+        const resultContainer = document.getElementById('result-container');
+        
+        const correctSound = document.getElementById('correct-sound');
+        const incorrectSound = document.getElementById('incorrect-sound');
+        const clickSound = document.getElementById('click-sound');
+
+        const registerAlert = document.getElementById('register-alert');
+        const loginAlert = document.getElementById('login-alert');
+
+        // Добавляем обработчик для всех кнопок и label для звука
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('button.sound-link, label.sound-link, .back-main-button.sound-link').forEach(element => {
+                element.addEventListener('click', () => {
+                    clickSound.currentTime = 0;
+                    clickSound.play();
+                });
+            });
+        });
+
+        function showAlert(element, message, type) {
+            element.innerText = message;
+            element.className = `alert-message show alert-${type}`;
+            setTimeout(() => {
+                element.classList.remove('show');
+            }, 3000);
+        }
+
+        function showRegister() {
+            loginContainer.style.display = 'block';
+            loginForm.style.display = 'none';
+        }
+
+        function showLogin() {
+            loginContainer.style.display = 'none';
+            loginForm.style.display = 'block';
+        }
+
+        function register() {
+            let username = document.getElementById('username').value;
+            if (username.trim() !== "") {
+                localStorage.setItem('user', username);
+                startTest(username);
+            } else {
+                showAlert(registerAlert, "Аты-жөніңізді енгізіңіз!", "danger");
+            }
+        }
+
+        function login() {
+            let username = document.getElementById('login-username').value;
+            if (username.trim() === "") {
+                showAlert(loginAlert, "Аты-жөніңізді енгізіңіз!", "danger");
+            } else if (localStorage.getItem('user') === username) {
+                startTest(username);
+            } else {
+                showAlert(loginAlert, "Мұндай пайдаланушы тіркелмеген!", "danger");
+            }
+        }
+
+        function goBack() {
+            if (confirm("Сіз шынымен артқа қайтқыңыз келе ме? Нәтижелер сақталмайды.")) {
+                score = 0;
+                currentQuestionIndex = 0;
+                testContainer.style.display = 'none';
+                resultContainer.style.display = 'none';
+                questionContainer.style.display = 'block';
+                showRegister(); // Возвращаемся на экран регистрации
+            }
+        }
+
+        function startTest(username) {
+            document.getElementById('user-name').innerText = username;
+            loginContainer.style.display = 'none';
+            loginForm.style.display = 'none';
+            testContainer.style.display = 'block';
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                // Анимация для появления
+                questionContainer.style.animation = 'flipIn 0.5s ease-out';
+                
+                const question = questions[currentQuestionIndex];
+                document.getElementById('question-text').innerText = question.question;
+                document.getElementById('option1').innerText = question.options[0];
+                document.getElementById('option2').innerText = question.options[1];
+                document.getElementById('option3').innerText = question.options[2];
+                document.getElementById('option4').innerText = question.options[3];
+
+                const options = document.getElementsByName('answer');
+                for (let i = 0; i < options.length; i++) {
+                    options[i].checked = false;
+                }
+            } else {
+                showResults();
+            }
+        }
+
+        function nextQuestion() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) {
+                const answer = parseInt(selectedOption.value);
+                if (answer === questions[currentQuestionIndex].correctAnswer) {
+                    score++;
+                    correctSound.currentTime = 0;
+                    correctSound.play();
+                } else {
+                    incorrectSound.currentTime = 0;
+                    incorrectSound.play();
+                }
+                currentQuestionIndex++;
+                
+                // Запуск анимации перед сменой вопроса
+                questionContainer.classList.add('flipping');
+                setTimeout(() => {
+                    questionContainer.classList.remove('flipping');
+                    displayQuestion();
+                }, 300); // Задержка равна длительности анимации flipOut
+
+            } else {
+                showAlert(questionContainer.querySelector('.options'), "Жауапты таңдаңыз!", "danger");
+            }
+        }
+
+        function showResults() {
+            questionContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            resultContainer.style.animation = 'fadeIn 0.5s';
+            document.getElementById('score').innerText = `Сіздің нәтижеңіз: ${score} / ${questions.length}`;
+        }
+
+        function restartTest() {
+            score = 0;
+            currentQuestionIndex = 0;
+            questionContainer.style.display = 'block';
+            resultContainer.style.display = 'none';
+            displayQuestion();
+        }
+    </script>
+</body>
+</html>
